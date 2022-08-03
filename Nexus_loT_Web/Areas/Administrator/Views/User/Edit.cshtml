@@ -1,0 +1,67 @@
+﻿@model Nexus_loT.Models.ViewModels.UserVM
+
+<form method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit User</h2>
+            <hr />
+        </div>
+        @*<div class="form-floating py-2 col-12">
+            <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" />
+            <label asp-for="UserName"></label>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>*@
+        <div class="form-floating py-2 col-12">
+            <input asp-for="FirstName" class="form-control" aria-required="true" />
+            <label asp-for="FirstName"></label>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input asp-for="LastName" class="form-control" aria-required="true" />
+            <label asp-for="LastName"></label>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input asp-for="Email" class="form-control" aria-required="true" />
+            <label asp-for="Email"></label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating py-2 col-12">
+            <input asp-for="Password" class="form-control" autocomplete="new-password"  />
+            <label asp-for="Password"></label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password"  />
+            <label asp-for="ConfirmPassword"></label>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+
+
+        <div class="form-floating py-2 col-12">
+            <select asp-for="RoleId" asp-items="ViewBag.RoleId" class=form-select>
+                <option disabled selected>-Select Role-</option>
+            </select>
+
+        </div>
+
+        @*<%= Html.DropDownList("SelectedItem", (IEnumerable<SelectListItem>
+            )ViewBag["IsActive"])%>*@
+
+    <div class="form-floating py-2 col-12">
+        @Html.DropDownList("IsActive", (IEnumerable<SelectListItem>)ViewBag.IsActive);
+        @*<select asp-for="IsActive" asp-items="ViewBag.IsActive" class=form-select>
+    <option disabled selected>-Select Status-</option>
+        </select>*@
+
+    </div>
+
+            <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+            <a asp-controller="User" asp-action="Index" class="btn btn-secondary"  style="width:150px">
+                Back to List
+            </a>
+    </div>
+</form>

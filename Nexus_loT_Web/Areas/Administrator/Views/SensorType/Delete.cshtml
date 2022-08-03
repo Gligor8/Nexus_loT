@@ -1,0 +1,41 @@
+﻿@model Nexus_loT.Models.SensorType
+
+<form method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Delete Sensor Type</h2>
+            <hr />
+        </div>
+        @*<div asp-validation-summary="All"></div>*@
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="APIUrl"></label>
+            <input asp-for="APIUrl" disabled class="form-control" />
+            <span asp-validation-for="APIUrl" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Configuration"></label>
+            <input asp-for="Configuration" disabled class="form-control" />
+            <span asp-validation-for="Configuration" class="text-danger"></span>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <select asp-for="MeasurementUnit" asp-items="ViewBag.MeasurementUnit" disabled class=form-select>
+                <option disabled selected>-Select Measurement Unit-</option>
+            </select>
+        </div>
+        <div class="form-floating py-2 col-12">
+            <select asp-for="Vendor" asp-items="ViewBag.Vendor" disabled class=form-select>
+                <option disabled selected>-Select Vendor-</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+        <a asp-controller="SensorType" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>

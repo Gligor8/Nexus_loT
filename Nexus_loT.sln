@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31229.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus_loT_Web", "Nexus_loT_Web\Nexus_loT_Web.csproj", "{E0E79E69-5347-488E-A7FE-7FACB0443E66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus_loT.DataAccess", "Nexus_loT.DataAccess\Nexus_loT.DataAccess.csproj", "{3C3AD17B-CE1E-479C-999F-49EA6C826F1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus_loT.Models", "Nexus_loT.Models\Nexus_loT.Models.csproj", "{55D28352-0E86-4E54-A42A-22CAF8EB4E76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0E79E69-5347-488E-A7FE-7FACB0443E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0E79E69-5347-488E-A7FE-7FACB0443E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0E79E69-5347-488E-A7FE-7FACB0443E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0E79E69-5347-488E-A7FE-7FACB0443E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C3AD17B-CE1E-479C-999F-49EA6C826F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C3AD17B-CE1E-479C-999F-49EA6C826F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C3AD17B-CE1E-479C-999F-49EA6C826F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C3AD17B-CE1E-479C-999F-49EA6C826F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D28352-0E86-4E54-A42A-22CAF8EB4E76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D28352-0E86-4E54-A42A-22CAF8EB4E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D28352-0E86-4E54-A42A-22CAF8EB4E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D28352-0E86-4E54-A42A-22CAF8EB4E76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2F8B3C2-6EDD-4206-86C5-E3BC48199B6C}
+	EndGlobalSection
+EndGlobal
