@@ -20,6 +20,6 @@ namespace Nexus_loT.Models
         public Sensor Sensor { get; set; }
 
         public double Value { get; set; }
-        public double Timestamp { get; set; }
+        public DateTime DateRead { get; set; } = DateTime.Now;
     }
 }

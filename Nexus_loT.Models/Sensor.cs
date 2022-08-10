@@ -32,7 +32,7 @@ namespace Nexus_loT.Models
 
         public string Configuration { get; set; }
         public string SerialNumber { get; set; }
-        public int Interval { get; set; }
+        public int Interval { get; set; } 
         public bool IsActive { get; set; }
     }
 }
