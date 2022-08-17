@@ -39,9 +39,9 @@ namespace Nexus_loT_Web.Services
                 var lastReading = readings.FirstOrDefault(x => x.Id == id);
 
 
-               
-                
-                    if (lastReading.Value != null)
+
+                   
+                    if (lastReading != null)
                     {
                         if (DateTime.Now.AddMinutes(sensor.Interval) < lastReading.DateRead)
                         {

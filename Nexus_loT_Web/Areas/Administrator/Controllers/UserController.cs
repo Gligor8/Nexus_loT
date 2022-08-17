@@ -17,9 +17,9 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public UserController(IUserRepository userRepository, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public UserController(IUserRepository userRepository, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _roleManager = roleManager;

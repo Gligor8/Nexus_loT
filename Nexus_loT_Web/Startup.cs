@@ -34,12 +34,12 @@ namespace Nexus_loT_Web
             
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddHangfire(config =>
-                config.UsePostgreSqlStorage(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfire(config =>
+                config.UsePostgreSqlStorage(Configuration.GetConnectionString("DefaultConnection")));
             services.AddHangfireServer();
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             services.AddScoped<IClusterRepository, ClusterRepository>();
@@ -51,12 +51,12 @@ namespace Nexus_loT_Web
             services.AddScoped<IVendorRepository, VendorRepository>();
             services.AddScoped<IReadingRepository, ReadingRepository>();
             services.AddScoped<SensorReadingService>();
-
+            //services.AddScoped<SeedingService>();
             //services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, IRecurringJobManager recurringJobManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, IRecurringJobManager recurringJobManager, UserManager<User> _userManager, RoleManager<IdentityRole> _roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -74,12 +74,15 @@ namespace Nexus_loT_Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
             app.UseAuthentication();
+            
             app.UseAuthorization();
 
-            
+            SeedingService.SeedData(_userManager, _roleManager);
+
+            app.UseStaticFiles();
             //app.UseSession();
             //app.MapRazorPages();
             app.UseEndpoints(endpoints =>

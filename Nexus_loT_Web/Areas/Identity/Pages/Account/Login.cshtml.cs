@@ -13,21 +13,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Nexus_loT.DataAccess.Repository.IRepository;
 using Nexus_loT_Web.Areas.Administrator.Controllers;
+using Nexus_loT.Models;
 
 namespace Nexus_loT_Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IUserRepository _userRepository;
         //private readonly UserController _userVM;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        public LoginModel(SignInManager<User> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager, IUserRepository userRepository)
+            UserManager<User> userManager, IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _userManager = userManager;
