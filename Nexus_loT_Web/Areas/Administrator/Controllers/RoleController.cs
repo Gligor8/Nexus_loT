@@ -11,7 +11,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
     [Area("Administrator")]
     public class RoleController : Controller
     {
-        //private readonly IRoleRepository _roleRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public RoleController(RoleManager<IdentityRole> roleRepository)
@@ -33,13 +33,14 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(IdentityRole obj)
+        public async Task<IActionResult> Add(IdentityRole obj)
         {
             if (ModelState.IsValid)
             {
-                //_roleRepository.Add(obj);
+               await _roleManager.CreateAsync(obj);
+               // _roleRepository.Add(obj);
                 //_roleRepository.Save();
-
+                
                 return RedirectToAction("Index");
             }
             return View(obj);

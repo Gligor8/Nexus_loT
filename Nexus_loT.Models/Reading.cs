@@ -19,7 +19,7 @@ namespace Nexus_loT.Models
         public string SensorId { get; set; }
         public Sensor Sensor { get; set; }
 
-        public double Value { get; set; }
+        public string Value { get; set; }
         public DateTime DateRead { get; set; } = DateTime.Now;
     }
 }

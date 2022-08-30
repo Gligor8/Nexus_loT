@@ -70,7 +70,7 @@ namespace Nexus_loT_Web
             }
             app.UseHangfireServer();
             app.UseHangfireDashboard();
-            recurringJobManager.AddOrUpdate("Send Request to API", () => serviceProvider.GetService<SensorReadingService>().ReadFromSensorAsync(DateTime.Now.ToLongTimeString()), Cron.Minutely);
+            recurringJobManager.AddOrUpdate("Send Request to API", () => serviceProvider.GetService<SensorReadingService>().ReadFromSensorAsync(), Cron.Hourly);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

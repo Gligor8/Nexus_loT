@@ -24,72 +24,73 @@ namespace Nexus_loT_Web.Services
 
         public HttpClient client = new HttpClient();
 
-        public async Task ReadFromSensorAsync(string id)
+        public async Task ReadFromSensorAsync()
         {
+            HttpClient client = new HttpClient();
             var listAllActiveSensors = _sensorRepository.GetAll().Where(x => x.IsActive == true);
 
             
-            Reading reading;
-
+            //Reading reading;
+            //var readings = _readingRepository.GetAll().Where(x => x.Sensor.IsActive == true).OrderByDescending(x => x.DateRead);
+            //var lastReading = readings.FirstOrDefault();
             foreach (var sensor in listAllActiveSensors)
             {
+
+                var readings = _readingRepository.GetAll().Where(x => x.SensorId == sensor.Id).OrderByDescending(x => x.DateRead); //Where(x => x.Value.Equals(sensor)); //OrderBy(x => x.SensorId == sensor.Id)
                 
-                var readings = _readingRepository.GetAll().OrderByDescending(x => x.DateRead).ToList();
-                
-                var lastReading = readings.FirstOrDefault(x => x.Id == id);
+                var lastReading = readings.FirstOrDefault();
 
 
 
-                   
-                    if (lastReading != null)
+                if (lastReading != null)
+                {
+                    if (DateTime.Now.AddMinutes(sensor.Interval) < lastReading.DateRead)
                     {
-                        if (DateTime.Now.AddMinutes(sensor.Interval) < lastReading.DateRead)
-                        {
-                            //odi ponatamu
-                        }
-                        else
-                        {
-                            //prati nov API request
-                            //Sensor sensorMeasurement = null;
-                            HttpResponseMessage response = await client.GetAsync(sensor.APIUrl).ConfigureAwait(true);
-                            if (response.IsSuccessStatusCode)
-                            {
-                            //sensorMeasurement = await response.Content.ReadAsAsync<Sensor>();
-                             string result = response.Content.ReadAsStringAsync().Result;
-                             var responseObj = JsonConvert.DeserializeObject<Reading>(result);
-
-                            _readingRepository.Add(responseObj);
-                            }
-                        //return sensorMeasurement;
-                            
-                       
-                        }
-                    
+                        //odi ponatamu
                     }
                     else
                     {
                         //prati nov API request
-                        HttpResponseMessage response = await client.GetAsync(sensor.APIUrl).ConfigureAwait(true);
+                        
+                        HttpResponseMessage response = await client.GetAsync(sensor.APIUrl);
                         if (response.IsSuccessStatusCode)
                         {
-                            //sensorMeasurement = await response.Content.ReadAsAsync<Sensor>();
+                            
                             string result = response.Content.ReadAsStringAsync().Result;
-                            var responseObj = JsonConvert.DeserializeObject<Reading>(result);
-
-                            _readingRepository.Add(responseObj);
+                            //var responseObj = JsonConvert.DeserializeObject<Reading>(result);
+                            var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
+                            _readingRepository.Add(readingObj);
                         }
+                        
+
 
                     }
 
-                
+                }
+                else
+                {
+                    //prati nov API request
+                    HttpResponseMessage response = await client.GetAsync(sensor.APIUrl).ConfigureAwait(true);
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        //var responseObj = JsonConvert.DeserializeObject<Reading>(result);
+                        var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
+                        _readingRepository.Add(readingObj);
+                    }
+
+                }
+
+
             }
 
-            //return listAllActiveSensors;
+            
         }
 
         //public async Task<Reading> WriteToDB()
         //{
-            
+
 
         //}
 
