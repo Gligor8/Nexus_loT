@@ -32,13 +32,11 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            //IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-           // _emailSender = emailSender;
             _roleManager = roleManager;
         }
 
@@ -51,9 +49,7 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            //[Required]
-            //[Display(Name = "Username")]
-            //public string UserName { get; set; }
+            
 
             [Required]
             [EmailAddress]
@@ -85,18 +81,13 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Role")]
             public string RoleId { get; set; }
-            //public string Role { get; set; }
-            //public IEnumerable<SelectListItem> RoleList { get; set; }
+            
 
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            //if (!_roleManager.RoleExistsAsync(SD.Role_Administrator).GetAwaiter().GetResult())
-            //{
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Administrator)).GetAwaiter().GetResult();
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_BasicUser)).GetAwaiter().GetResult();
-            //}
+           
             IEnumerable<IdentityRole> getRoles = _roleManager.Roles.ToList();
             ViewData["RoleId"] = new SelectList(getRoles.ToList(), "Name");
 
@@ -108,7 +99,7 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
             if (ModelState.IsValid)
             {
                 var user = new User {UserName = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Email = Input.Email, IsActive = Input.IsActive};

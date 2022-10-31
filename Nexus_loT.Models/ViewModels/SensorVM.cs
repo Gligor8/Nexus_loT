@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -13,10 +15,7 @@ namespace Nexus_loT.Models.ViewModels
         public string Name { get; set; }
 
 
-
-        [ForeignKey("Cluster")]
-        public string ClusterId { get; set; }
-        public List<Cluster> Cluster { get; set; }
+        public List<Cluster> Clusters { get; set; }
 
 
 
@@ -24,12 +23,15 @@ namespace Nexus_loT.Models.ViewModels
         public string SensorTypeId { get; set; }
         public SensorType SensorType { get; set; }
 
+        [Display(Name = "API Url")]
         public string APIUrl { get; set; }
 
         public double X { get; set; }
         public double Y { get; set; }
 
         public string Configuration { get; set; }
+
+        [Display(Name = "Serial Number")]
         public string SerialNumber { get; set; }
         public int Interval { get; set; }
         public bool IsActive { get; set; }

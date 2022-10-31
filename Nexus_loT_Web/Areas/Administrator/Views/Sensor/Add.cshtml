@@ -9,10 +9,10 @@
         </div>
         @*<div asp-validation-summary="All"></div>*@
         @*<div class="mb-3">
-            <label asp-for="Id"></label>
-            <input asp-for="Id" class="form-control" />
-            <span asp-validation-for="Id" class="text-danger"></span>
-        </div>*@
+                <label asp-for="Id"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>*@
 
         <div class="mb-3">
             <label asp-for="Name"></label>
@@ -26,7 +26,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Configuration"></label>
-            <input asp-for="Configuration" class="form-control" />
+            <input asp-for="Configuration" id="configuration" class="form-control" />
             <span asp-validation-for="Configuration" class="text-danger"></span>
         </div>
         <div class="mb-3">
@@ -40,7 +40,7 @@
             <span asp-validation-for="Y" type="number" class="text-danger"></span>
         </div>
         <div class="form-floating py-2 col-12">
-            <select asp-for="ClusterId" asp-items="(SelectList)@ViewData["Cluster"]" class=form-select>
+            <select asp-for="Clusters" asp-items="(SelectList)@ViewData["Clusters"]" class=form-select multiple="multiple">
                 <option disabled selected>-Select Cluster-</option>
             </select>
         </div>
@@ -63,13 +63,44 @@
         <div class="form-floating py-2 col-12">
             @Html.DropDownList("IsActive", (IEnumerable<SelectListItem>)ViewBag.IsActive);
             @*<select asp-for="IsActive" asp-items="ViewBag.IsActive" class=form-select>
-        <option disabled selected>-Select Status-</option>
-            </select>*@
+                <option disabled selected>-Select Status-</option>
+                    </select>*@
 
         </div>
-        <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+        <button type="submit" onclick="return ValidateJsonInput()" class="btn btn-primary" style="width:150px">Add</button>
         <a asp-controller="Sensor" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back to List
         </a>
     </div>
 </form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        
+        function ValidateJsonInput() {
+            
+            try {
+                debugger;
+                var configId = document.getElementById('configuration').value;
+                
+                JSON.parse(configId) 
+                   
+                   
+            
+
+            
+            } catch (e) {
+                alert("The value of configuration must be of JSON format.");
+                return false;
+            }
+                
+            
+    }
+	
+    </script>
+}
+

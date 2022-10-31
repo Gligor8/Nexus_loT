@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="BoldReports.JavaScript" Version="3.1.31" />
+    <PackageReference Include="BoldReports.Mvc5" Version="3.1.31" />
+    <PackageReference Include="BoldReports.Web" Version="3.1.31" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.20" />
     <PackageReference Include="Hangfire.Core" Version="1.7.20" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
@@ -22,12 +25,22 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
+    <PackageReference Include="NJsonSchema" Version="10.5.1" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.4.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="Telerik.Reporting.OpenXmlRendering.Trial" Version="16.2.22.914" />
+    <PackageReference Include="Telerik.WebReportDesigner.Services.Trial" Version="16.2.22.914" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Nexus_loT.DataAccess\Nexus_loT.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

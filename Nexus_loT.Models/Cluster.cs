@@ -17,9 +17,7 @@ namespace Nexus_loT.Models
         [Required]
         public string Name { get; set; }
 
-        [ForeignKey("Sensor")]
-        public string SensorId { get; set; }
-        public List<Sensor> Sensor { get; set; }
+        public List<Sensor> Sensors { get; set; }
 
 
     }

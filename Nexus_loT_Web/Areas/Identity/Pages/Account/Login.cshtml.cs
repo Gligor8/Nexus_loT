@@ -24,7 +24,7 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IUserRepository _userRepository;
-        //private readonly UserController _userVM;
+        
 
         public LoginModel(SignInManager<User> signInManager, 
             ILogger<LoginModel> logger,
@@ -50,7 +50,7 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            //[Display(Name = "Username")]
+            
             public string Email { get; set; }
 
             [Required]
@@ -88,7 +88,7 @@ namespace Nexus_loT_Web.Areas.Identity.Pages.Account
         
             if (ModelState.IsValid)
             {
-                //var userFromDb = _userManager.GetUserId(id);
+               
                 var user = _userRepository.GetAll().FirstOrDefault(x => x.Email == Input.Email);
 
                 // This doesn't count login failures towards account lockout

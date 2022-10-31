@@ -1,5 +1,4 @@
-﻿//using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nexus_loT.DataAccess.Repository;
@@ -21,19 +20,25 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         private readonly ISensorRepository _sensorRepository;
         private readonly ISensorTypeRepository _sensorTypeRepository;
         private readonly IClusterRepository _clusterRepository;
-        //private readonly IMapper _mapper;
+        
         public SensorController(ISensorRepository sensorRepository, ISensorTypeRepository sensorTypeRepository, IClusterRepository clusterRepository)
         {
             _sensorRepository = sensorRepository;
             _sensorTypeRepository = sensorTypeRepository;
             _clusterRepository = clusterRepository;
-            //_mapper = mapper;
+           
 
         }
-        public IActionResult Index()
+       
+        public IActionResult Index(string name)
         {
-            var sensors = _sensorRepository.GetAll();
+            var clusters = _sensorRepository.GetAll().Where(x => x.Name == name).ToList();
+            var joinStr = string.Join(",", clusters);
+
+            
+            var sensors = _sensorRepository.GetAll(includeProperties: "SensorType,Clusters");
             List<SensorVM> sensorsVM = new List<SensorVM>();
+            
             foreach (var sensor in sensors)
             {
 
@@ -45,8 +50,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                     Configuration = sensor.Configuration,
                     SensorTypeId = sensor.SensorTypeId,
                     SensorType = sensor.SensorType,
-                    ClusterId = sensor.ClusterId,
-                    Cluster = sensor.Cluster,
+                    Clusters = sensor.Clusters,
                     X = sensor.X,
                     Y = sensor.Y,
                     SerialNumber = sensor.SerialNumber,
@@ -55,14 +59,20 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 };
                 sensorsVM.Add(sensorVM);
             }
+            
             return View(sensorsVM);
         }
+
+        /// <summary>
+        /// Maps the Sensor with Sensor viewmodel, and adds a new object. Clusters and sensortypes are sent to Viewbag/Viewdata and depicted in a dropdown list.
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet]
         public IActionResult Add()
         {
             IEnumerable<Cluster> getClusters = _clusterRepository.GetAll().ToList();
-            ViewData["Cluster"] = new SelectList(getClusters.ToList(), "Id", "Name");
+            ViewData["Clusters"] = new SelectList(getClusters.ToList(), "Id", "Name");
 
             IEnumerable<SensorType> getSensorTypes = _sensorTypeRepository.GetAll().ToList();
             ViewData["SensorType"] = new SelectList(getSensorTypes.ToList(), "Id", "Name");
@@ -85,20 +95,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var sensor = _sensorRepository.GetById(id);
-                //SensorVM sensorVM = new SensorVM()
-                //{
-                //    Id = sensor.Id,
-                //    Name = sensor.Name,
-                //    APIUrl = sensor.APIUrl,
-                //    SensorTypeId = sensor.SensorTypeId,
-                //    SensorType = sensor.SensorType,
-                //    ClusterId = sensor.ClusterId,
-                //    Cluster = sensor.Cluster,
-                //    X = sensor.X,
-                //    Y = sensor.Y,
-                //};
-                //var mappedSensor = _mapper.Map<SensorVM>(obj);
+                
 
                 _sensorRepository.Add(obj);
 
@@ -126,8 +123,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 Configuration = sensorFirst.Configuration,
                 SensorTypeId = sensorFirst.SensorTypeId,
                 SensorType = sensorFirst.SensorType,
-                ClusterId = sensorFirst.ClusterId,
-                Cluster = sensorFirst.Cluster,
+                Clusters = sensorFirst.Clusters,
                 X = sensorFirst.X,
                 Y = sensorFirst.Y,
                 SerialNumber = sensorFirst.SerialNumber,
@@ -136,7 +132,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             };
 
             IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
-            ViewBag.Cluster = clusters.Select(s => new SelectListItem
+            ViewBag.Clusters = clusters.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name,
@@ -148,7 +144,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             {
                 Value = s.Id.ToString(),
                 Text = s.Name,
-                //Selected = s.Unit == units[0] ? true : false
+                
             });
 
             IEnumerable<SelectListItem> items = new List<SelectListItem>(){
@@ -162,6 +158,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             ViewBag.IsActive = items;
             return View(sensorVM);
         }
+
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
@@ -177,6 +174,12 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             }
             return View(obj);
         }
+
+        /// <summary>
+        /// Maps the Sensor with Sensor viewmodel, and the deletes the object. Clusters and sensortypes are sent to Viewbag/Viewdata and depicted in a dropdown list.
+        /// </summary>
+        /// <param name="id">Takes the sensor from database by id</param>
+        /// <returns></returns>
 
         public IActionResult Delete(string id)
         {
@@ -194,14 +197,39 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 Configuration = sensorFromDb.Configuration,
                 SensorTypeId = sensorFromDb.SensorTypeId,
                 SensorType = sensorFromDb.SensorType,
-                ClusterId = sensorFromDb.ClusterId,
-                Cluster = sensorFromDb.Cluster,
+                Clusters = sensorFromDb.Clusters,
                 X = sensorFromDb.X,
                 Y = sensorFromDb.Y,
                 SerialNumber = sensorFromDb.SerialNumber,
                 Interval = sensorFromDb.Interval,
                 IsActive = sensorFromDb.IsActive
             };
+
+            IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
+            ViewBag.Cluster = clusters.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name,
+               
+            });
+
+            IEnumerable<SensorType> sensorTypes = _sensorTypeRepository.GetAll();
+            ViewBag.SensorType = sensorTypes.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name,
+                
+            });
+
+            IEnumerable<SelectListItem> items = new List<SelectListItem>(){
+                    new SelectListItem {
+                        Text = "Active", Value = true.ToString(), Selected = sensorVM.IsActive ? true : false
+                    },
+                    new SelectListItem {
+                        Text = "Inactive", Value = false.ToString(), Selected = !sensorVM.IsActive ? true : false
+                    }
+                };
+            ViewBag.IsActive = items;
 
             if (sensorVM == null)
             {
@@ -213,17 +241,17 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken, ActionName("Delete")]
-        public IActionResult DeletePOST(string id)
+        public IActionResult DeletePOST(SensorVM obj, string id)
         {
 
             if (ModelState.IsValid)
             {
-                _sensorRepository.Remove(id);
+                _sensorRepository.Remove(obj, id);
 
 
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(obj);
         }
     }
 }

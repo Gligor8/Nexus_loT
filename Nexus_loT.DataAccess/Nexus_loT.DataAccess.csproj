@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="BoldReports.JavaScript" Version="3.1.31" />
+    <PackageReference Include="BoldReports.Mvc5" Version="3.1.31" />
+    <PackageReference Include="BoldReports.Web" Version="3.1.31" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.20" />
     <PackageReference Include="Hangfire.Core" Version="1.7.20" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
@@ -24,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NJsonSchema" Version="10.5.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
   </ItemGroup>

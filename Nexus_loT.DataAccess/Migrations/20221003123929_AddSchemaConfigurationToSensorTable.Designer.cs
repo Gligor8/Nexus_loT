@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nexus_loT.DataAccess;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nexus_loT.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221003123929_AddSchemaConfigurationToSensorTable")]
+    partial class AddSchemaConfigurationToSensorTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,15 +23,15 @@ namespace Nexus_loT.DataAccess.Migrations
 
             modelBuilder.Entity("ClusterSensor", b =>
                 {
-                    b.Property<string>("ClustersId")
+                    b.Property<string>("ClusterId")
                         .HasColumnType("text");
 
-                    b.Property<string>("SensorsId")
+                    b.Property<string>("SensorId")
                         .HasColumnType("text");
 
-                    b.HasKey("ClustersId", "SensorsId");
+                    b.HasKey("ClusterId", "SensorId");
 
-                    b.HasIndex("SensorsId");
+                    b.HasIndex("SensorId");
 
                     b.ToTable("ClusterSensor");
                 });
@@ -244,6 +246,9 @@ namespace Nexus_loT.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("SensorId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clusters");
@@ -281,7 +286,6 @@ namespace Nexus_loT.DataAccess.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SensorId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Value")
@@ -301,6 +305,9 @@ namespace Nexus_loT.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("APIUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClusterId")
                         .HasColumnType("text");
 
                     b.Property<string>("Configuration")
@@ -403,13 +410,13 @@ namespace Nexus_loT.DataAccess.Migrations
                 {
                     b.HasOne("Nexus_loT.Models.Cluster", null)
                         .WithMany()
-                        .HasForeignKey("ClustersId")
+                        .HasForeignKey("ClusterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Nexus_loT.Models.Sensor", null)
                         .WithMany()
-                        .HasForeignKey("SensorsId")
+                        .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -469,9 +476,7 @@ namespace Nexus_loT.DataAccess.Migrations
                 {
                     b.HasOne("Nexus_loT.Models.Sensor", "Sensor")
                         .WithMany()
-                        .HasForeignKey("SensorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SensorId");
 
                     b.Navigation("Sensor");
                 });

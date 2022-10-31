@@ -16,10 +16,12 @@ namespace Nexus_loT.Models
         public string Id { get; set; }
 
         [ForeignKey("Sensor")]
+        
         public string SensorId { get; set; }
+        [Required]
         public Sensor Sensor { get; set; }
 
         public string Value { get; set; }
-        public DateTime DateRead { get; set; } = DateTime.Now;
+        public DateTime DateRead { get; set; } = DateTime.UtcNow;
     }
 }

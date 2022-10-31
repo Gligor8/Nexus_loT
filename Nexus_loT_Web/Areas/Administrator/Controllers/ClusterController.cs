@@ -38,7 +38,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _clusterRepository.Add(obj);
-                //_clusterRepository.Save();
+                
                
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _clusterRepository.Edit(obj, id);
-               // _clusterRepository.Save();
+               
                 
                 return RedirectToAction("Index");
             }
@@ -97,7 +97,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _clusterRepository.Remove(id);
-                //_clusterRepository.Save();
+                
 
                 return RedirectToAction("Index");
             }

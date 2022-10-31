@@ -14,10 +14,7 @@ namespace Nexus_loT.Models
         public string Name { get; set; }
 
        
-        
-        [ForeignKey("Cluster")]
-        public string ClusterId { get; set; }
-        public List<Cluster> Cluster { get; set; }
+        public List<Cluster> Clusters { get; set; }
 
        
 
@@ -34,5 +31,6 @@ namespace Nexus_loT.Models
         public string SerialNumber { get; set; }
         public int Interval { get; set; } 
         public bool IsActive { get; set; }
+        public string ConfigurationSchema { get; set; }
     }
 }

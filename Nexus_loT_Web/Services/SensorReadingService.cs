@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
 using Nexus_loT.DataAccess.Repository.IRepository;
 using Nexus_loT.Models;
+using NJsonSchema;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -24,87 +26,117 @@ namespace Nexus_loT_Web.Services
 
         public HttpClient client = new HttpClient();
 
+
+        /// <summary>
+        /// Reads data from API. Check the time inverval of a reading and sends a request if the time of previous reading excedes one minute.
+        /// Validates the received Json against a jsonschema which is generated from the configuration of a sensor. The method is being activated from a hangfire job in startup.cs.
+        /// </summary>
+        /// <returns></returns>
         public async Task ReadFromSensorAsync()
-        {
-            HttpClient client = new HttpClient();
-            var listAllActiveSensors = _sensorRepository.GetAll().Where(x => x.IsActive == true);
-
-            
-            //Reading reading;
-            //var readings = _readingRepository.GetAll().Where(x => x.Sensor.IsActive == true).OrderByDescending(x => x.DateRead);
-            //var lastReading = readings.FirstOrDefault();
-            foreach (var sensor in listAllActiveSensors)
+       {
+            try
             {
-
-                var readings = _readingRepository.GetAll().Where(x => x.SensorId == sensor.Id).OrderByDescending(x => x.DateRead); //Where(x => x.Value.Equals(sensor)); //OrderBy(x => x.SensorId == sensor.Id)
-                
-                var lastReading = readings.FirstOrDefault();
+                HttpClient client = new HttpClient();
+                var listAllActiveSensors = _sensorRepository.GetAll().Where(x => x.IsActive == true);
 
 
 
-                if (lastReading != null)
+                foreach (var sensor in listAllActiveSensors)
                 {
-                    if (DateTime.Now.AddMinutes(sensor.Interval) < lastReading.DateRead)
+
+                    var readings = _readingRepository.GetAll().Where(x => x.SensorId == sensor.Id).OrderByDescending(x => x.DateRead); //Where(x => x.Value.Equals(sensor)); //OrderBy(x => x.SensorId == sensor.Id)
+
+                    var lastReading = readings.LastOrDefault();
+
+
+
+                    if (lastReading != null)
                     {
-                        //odi ponatamu
+                        if (DateTime.UtcNow < lastReading.DateRead.AddMinutes(sensor.Interval))
+                        {
+                            //odi ponatamu
+                        }
+                        else
+                        {
+                            //prati nov API request
+
+                            HttpResponseMessage response = await client.GetAsync(sensor.APIUrl);
+                            if (response.IsSuccessStatusCode)
+                            {
+
+                                string result = response.Content.ReadAsStringAsync().Result;
+                                
+
+                                var schema = await NJsonSchema.JsonSchema.FromJsonAsync(sensor.ConfigurationSchema);
+                                
+                                var errors = schema.Validate(result);
+
+
+
+                                if (errors.Count == 0)
+                                {
+                                    var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
+                                    _readingRepository.Add(readingObj);
+                                }
+                                else
+                                {
+                                    // treba errorite da se zapisat vo log
+                                    Console.WriteLine();
+                                }
+
+                            }
+
+
+
+                        }
+
                     }
                     else
                     {
-                        //prati nov API request
                         
+                        //prati nov API request
                         HttpResponseMessage response = await client.GetAsync(sensor.APIUrl);
                         if (response.IsSuccessStatusCode)
                         {
-                            
+
                             string result = response.Content.ReadAsStringAsync().Result;
-                            //var responseObj = JsonConvert.DeserializeObject<Reading>(result);
-                            var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
-                            _readingRepository.Add(readingObj);
+                            
+
+                            var schema = await NJsonSchema.JsonSchema.FromJsonAsync(sensor.ConfigurationSchema);
+                            
+                            var errors = schema.Validate(result);
+
+
+
+                            if (errors.Count == 0)
+                            {
+                                var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
+                                _readingRepository.Add(readingObj);
+                            }
+                            else
+                            {
+                                // treba errorite da se zapisat vo log
+                                Console.WriteLine();
+                            }
+
+
                         }
-                        
 
 
                     }
-
                 }
-                else
-                {
-                    //prati nov API request
-                    HttpResponseMessage response = await client.GetAsync(sensor.APIUrl).ConfigureAwait(true);
-                    if (response.IsSuccessStatusCode)
-                    {
-
-                        string result = response.Content.ReadAsStringAsync().Result;
-                        //var responseObj = JsonConvert.DeserializeObject<Reading>(result);
-                        var readingObj = new Reading() { SensorId = sensor.Id, Value = result };
-                        _readingRepository.Add(readingObj);
-                    }
-
-                }
-
-
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
 
             
         }
 
-        //public async Task<Reading> WriteToDB()
-        //{
-
-
-        //}
-
-        //public async Task<Reading> FiltrateSensors(string sensorId)
-        //{
-        //    var getAllActiveSensors = _sensorRepository.GetAll().Where(x => x.IsActive == true);
-        //    var activeSensor = _sensorRepository.GetById(sensorId);
-        //    //var getAllActiveSensors = getAllSensors.
-
-        //    if (activeSensor.IsActive == true)
-        //    {
-        //        return ReadFromSensorAsync();
-        //    }
-        //}
-
+        
+       
     }
 }

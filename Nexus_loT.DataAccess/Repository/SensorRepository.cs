@@ -1,10 +1,13 @@
 ﻿//using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Nexus_loT.DataAccess.Repository.IRepository;
 using Nexus_loT.Models;
 using Nexus_loT.Models.ViewModels;
+using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,26 +25,36 @@ namespace Nexus_loT.DataAccess.Repository
 
         public void Add(SensorVM entity)
         {
-            //var sensorFromDb = _db.Sensors.FirstOrDefault(x => x.Id == id);
+           
+            var schemaConfig = entity.Configuration;
+            var schema = JsonSchema.FromSampleJson(schemaConfig);
+
+            var prop = schema.Properties;
+            foreach (var property in prop)
+            {
+                JsonSchemaProperty value = property.Value;
+                value.IsRequired = true;
+            }
 
             Sensor mappedSensor = new Sensor()
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                ClusterId = entity.ClusterId,
-                Cluster = entity.Cluster,
+                Clusters = entity.Clusters,
                 SensorTypeId = entity.SensorTypeId,
                 SensorType = entity.SensorType,
                 APIUrl = entity.APIUrl,
                 X = entity.X,
                 Y = entity.Y,
                 Configuration = entity.Configuration,
+                ConfigurationSchema = schema.ToJson(),
                 SerialNumber = entity.SerialNumber,
                 Interval = entity.Interval,
                 IsActive = entity.IsActive
             };
 
-            //var mappedSensor = _mapper.Map<Sensor>(entity);
+            
+            
             _db.Sensors.Add(mappedSensor);
             _db.SaveChanges();
             
@@ -50,18 +63,28 @@ namespace Nexus_loT.DataAccess.Repository
 
         public void Edit(SensorVM entity, string id)
         {
+            var schemaConfig = entity.Configuration;
+            var schema = JsonSchema.FromSampleJson(schemaConfig);
+
+            var prop = schema.Properties;
+            foreach (var property in prop)
+            {
+                JsonSchemaProperty value = property.Value;
+                value.IsRequired = true;
+            }
+
             Sensor mappedSensor = new Sensor()
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                ClusterId = entity.ClusterId,
-                Cluster = entity.Cluster,
+                Clusters = entity.Clusters,
                 SensorTypeId = entity.SensorTypeId,
                 SensorType = entity.SensorType,
                 APIUrl = entity.APIUrl,
                 X = entity.X,
                 Y = entity.Y,
                 Configuration = entity.Configuration,
+                ConfigurationSchema = schema.ToJson(),
                 SerialNumber = entity.SerialNumber,
                 Interval = entity.Interval,
                 IsActive = entity.IsActive
@@ -71,9 +94,22 @@ namespace Nexus_loT.DataAccess.Repository
             _db.SaveChanges();
         }
 
-        public IEnumerable<Sensor> GetAll()
+        public IEnumerable<Sensor> GetAll(Expression<Func<Sensor, bool>>? filter = null, string? includeProperties = null)
         {
-            IEnumerable<Sensor> sensorsDM = _db.Sensors.ToList();
+            IQueryable<Sensor> sensorsDM = _db.Sensors;
+
+            if (filter != null)
+            {
+                sensorsDM = sensorsDM.Where(filter);
+            }
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    sensorsDM = sensorsDM.Include(includeProp);
+                }
+            }
+
             return sensorsDM;
 
         }
@@ -84,27 +120,33 @@ namespace Nexus_loT.DataAccess.Repository
             return sensorFromDb;
         }
 
-        public void Remove(string id)
+        public void Remove(SensorVM entity, string id)
         {
-            var sensorFromDb = _db.Sensors.FirstOrDefault(x => x.Id.Equals(id));
+            //var sensorFromDb = _db.Sensors.FirstOrDefault(x => x.Id.Equals(id));
 
-            SensorVM mappedSensor = new SensorVM()
+            Sensor mappedSensor = new Sensor()
             {
-                Id = sensorFromDb.Id,
-                Name = sensorFromDb.Name,
-                ClusterId = sensorFromDb.ClusterId,
-                Cluster = sensorFromDb.Cluster,
-                SensorTypeId = sensorFromDb.SensorTypeId,
-                SensorType = sensorFromDb.SensorType,
-                APIUrl = sensorFromDb.APIUrl,
-                X = sensorFromDb.X,
-                Y = sensorFromDb.Y,
-                Configuration = sensorFromDb.Configuration,
-                SerialNumber = sensorFromDb.SerialNumber,
-                Interval = sensorFromDb.Interval,
-                IsActive = sensorFromDb.IsActive
+                Id = entity.Id,
+                Name = entity.Name,
+                Clusters = entity.Clusters,
+                SensorTypeId = entity.SensorTypeId,
+                SensorType = entity.SensorType,
+                APIUrl = entity.APIUrl,
+                X = entity.X,
+                Y = entity.Y,
+                Configuration = entity.Configuration,
+                SerialNumber = entity.SerialNumber,
+                Interval = entity.Interval,
+                IsActive = entity.IsActive
             };
-            _db.Remove(sensorFromDb);
+
+            var selectSensor = _db.Readings.Where(a => a.SensorId == mappedSensor.Id);
+            foreach (var reading in selectSensor)
+            {
+                _db.Readings.Remove(reading);
+            }
+           
+            _db.Sensors.Remove(mappedSensor);
             _db.SaveChanges();
         }
     }

@@ -38,7 +38,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _measurementUnitRepository.Add(obj);
-               // _measurementUnitRepository.Save();
+              
                
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _measurementUnitRepository.Edit(obj, id);
-               // _measurementUnitRepository.Save();
+               
                 
                 return RedirectToAction("Index");
             }
@@ -97,7 +97,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _measurementUnitRepository.Remove(id);
-               // _measurementUnitRepository.Save();
+               
 
                 return RedirectToAction("Index");
             }

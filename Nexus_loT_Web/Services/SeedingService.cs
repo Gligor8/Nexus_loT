@@ -9,14 +9,7 @@ namespace Nexus_loT_Web.Services
 {
     public static class SeedingService
     {
-        //private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly UserManager<User> _userManager;
-        //public SeedingService(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
-        //{
-        //    _roleManager = roleManager;
-        //    _userManager = userManager;
-        //}
-
+        
 
 
         public static void SeedRoles
@@ -77,46 +70,7 @@ namespace Nexus_loT_Web.Services
 
             SeedRoles(_roleManager);
             SeedUsers(_userManager);
-            //string adminId = Guid.NewGuid().ToString();
-            //string roleId = Guid.NewGuid().ToString();
-            //var hasher = new PasswordHasher<User>();
-
-            //if (!_roleManager.RoleExistsAsync("Administrator").Result)
-            //{
-            //    var adminRole = new IdentityRole
-            //    {
-            //        Id = roleId,
-            //        Name = "Administrator",
-            //        NormalizedName = "ADMINISTRATOR"
-            //    };
-
-            //    IdentityResult roleResult = _roleManager.CreateAsync(adminRole).GetAwaiter().GetResult(); ;
-
-            //}
-            //else if (_userManager.FindByEmailAsync("admin22@yahoo.com").Result == null)
-            //{
-            //    var newAdmin = new User
-            //    {
-            //        Id = adminId,
-            //        FirstName = "Admin",
-            //        LastName = "Administratorr",
-            //        Email = "admin22@yahoo.com",
-            //        //NormalizedEmail = "admin22@yahoo.com",
-            //        IsActive = true,
-            //        //EmailConfirmed = true,
-            //        PasswordHash = hasher.HashPassword(null, "Adminadmin@@123"),
-
-            //        //SecurityStamp = string.Empty
-
-            //    };
-
-            //    IdentityResult result = _userManager.CreateAsync(newAdmin).GetAwaiter().GetResult();
-
-            //    if (result.Succeeded)
-            //    {
-            //        _userManager.AddToRoleAsync(newAdmin, "Administrator").GetAwaiter().GetResult();
-            //    }
-            //}
+            
 
 
         }

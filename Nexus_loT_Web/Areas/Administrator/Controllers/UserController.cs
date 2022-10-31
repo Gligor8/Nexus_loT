@@ -66,11 +66,10 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 LastName = userFirst.LastName,
                 Email = userFirst.Email,
                 Password = userFirst.PasswordHash,
-                //RoleId = userFirst.RoleId,
                 IsActive = userFirst.IsActive
             };
             var userRole = _userManager.GetRolesAsync(userFirst).GetAwaiter().GetResult();
-            //string selectedValue = userRole 
+            
             IEnumerable<IdentityRole> getRoles = _roleManager.Roles.ToList();
             ViewBag.RoleId = getRoles.Select(s => new SelectListItem
             {
@@ -102,12 +101,11 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             {
                 var userFirst = _userRepository.GetById(id);
                 
-                //var role = _roleManager.Roles.SingleOrDefault(x => x.Name == obj.RoleId);
-                //var getRole = _roleManager.GetRoleIdAsync(role);
+               
 
                 var userRole = _userManager.GetRolesAsync(userFirst).GetAwaiter().GetResult();
                 var role = _roleManager.FindByNameAsync(userRole.First()).GetAwaiter().GetResult();
-                //var userRole = _userManager.IsInRoleAsync(userFirst, obj.RoleId);
+                
                 
                 var roleById = _roleManager.FindByIdAsync(obj.RoleId).GetAwaiter().GetResult();
 
@@ -154,16 +152,13 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                 _userRepository.Remove(id);
-               // _userRepository.Save();
+               
 
                 return RedirectToAction("Index");
             }
             return View();
         }
 
-        //public IActionResult GetUserById(string id)
-        //{
-        //    return _userRepository.GetById(id);
-        //}
+        
     }
 }

@@ -21,7 +21,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         }
         public IActionResult Index()
         {
-            //IEnumerable<IdentityRole> ListOfRoles = _roleRepository.GetAll();
+            
             
             return View(_roleManager.Roles);
         }
@@ -38,8 +38,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
             if (ModelState.IsValid)
             {
                await _roleManager.CreateAsync(obj);
-               // _roleRepository.Add(obj);
-                //_roleRepository.Save();
+               
                 
                 return RedirectToAction("Index");
             }
@@ -74,8 +73,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 var RoleFromDb = await _roleManager.FindByIdAsync(obj.Id);
                 RoleFromDb.Name = obj.Name;
                 var role = await _roleManager.UpdateAsync(RoleFromDb);
-                //_roleRepository.Edit(obj);
-                //_roleRepository.Save();
+               
 
                 return RedirectToAction("Index");
             }
