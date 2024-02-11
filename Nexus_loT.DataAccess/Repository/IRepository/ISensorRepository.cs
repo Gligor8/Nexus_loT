@@ -11,10 +11,10 @@ namespace Nexus_loT.DataAccess.Repository.IRepository
 {
     public interface ISensorRepository 
     {
-        void Add(SensorVM entity);
-        void Edit(SensorVM entity, string id);
+        void Add(SensorVM entity, IEnumerable<string> selectedClusterIds);
+        void Edit(SensorVM entity, string id, IEnumerable<string> selectedClusterIds);
         Sensor GetById(string id);
         IEnumerable<Sensor> GetAll(Expression<Func<Sensor, bool>>? filter = null, string? includeProperties = null);
-        void Remove(SensorVM entity, string id);
+        void Remove(SensorVM entity, string id, IEnumerable<string> selectedClusterIds);
     }
 }

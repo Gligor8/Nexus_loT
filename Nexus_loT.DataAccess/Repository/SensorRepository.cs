@@ -23,7 +23,7 @@ namespace Nexus_loT.DataAccess.Repository
             //_mapper = mapper;
         }
 
-        public void Add(SensorVM entity)
+        public void Add(SensorVM entity, IEnumerable<string> selectedClusterIds)
         {
            
             var schemaConfig = entity.Configuration;
@@ -61,7 +61,7 @@ namespace Nexus_loT.DataAccess.Repository
             
         }
 
-        public void Edit(SensorVM entity, string id)
+        public void Edit(SensorVM entity, string id, IEnumerable<string> selectedClusterIds)
         {
             var schemaConfig = entity.Configuration;
             var schema = JsonSchema.FromSampleJson(schemaConfig);
@@ -120,7 +120,7 @@ namespace Nexus_loT.DataAccess.Repository
             return sensorFromDb;
         }
 
-        public void Remove(SensorVM entity, string id)
+        public void Remove(SensorVM entity, string id, IEnumerable<string> selectedClusterIds)
         {
             //var sensorFromDb = _db.Sensors.FirstOrDefault(x => x.Id.Equals(id));
 

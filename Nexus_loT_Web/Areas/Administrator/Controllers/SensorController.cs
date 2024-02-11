@@ -71,10 +71,17 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            
+            
             IEnumerable<Cluster> getClusters = _clusterRepository.GetAll().ToList();
-            ViewData["Clusters"] = new SelectList(getClusters.ToList(), "Id", "Name");
+          
+            ViewData["Clusters"] = new MultiSelectList(getClusters, "Id", "Name");
 
-            IEnumerable<SensorType> getSensorTypes = _sensorTypeRepository.GetAll().ToList();
+			
+			
+
+
+			IEnumerable<SensorType> getSensorTypes = _sensorTypeRepository.GetAll().ToList();
             ViewData["SensorType"] = new SelectList(getSensorTypes.ToList(), "Id", "Name");
 
             IEnumerable<SelectListItem> items = new List<SelectListItem>(){
@@ -91,13 +98,13 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(SensorVM obj)
+        public IActionResult Add(SensorVM obj, IEnumerable<string> selectedClusterIds)
         {
             if (ModelState.IsValid)
             {
                 
 
-                _sensorRepository.Add(obj);
+                _sensorRepository.Add(obj, selectedClusterIds);
 
 
                 return RedirectToAction("Index");
@@ -131,13 +138,15 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 IsActive = sensorFirst.IsActive
             };
 
-            IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
-            ViewBag.Clusters = clusters.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.Name,
-                //Selected = s.Unit == units[0] ? true : false
-            });
+            IEnumerable<Cluster> getClusters = _clusterRepository.GetAll().ToList();
+            ViewData["Clusters"] = new SelectList(getClusters.ToList(), "Id", "Name");
+            //IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
+            //ViewBag.Clusters = clusters.Select(s => new SelectListItem
+            //{
+            //    Value = s.Id.ToString(),
+            //    Text = s.Name,
+            //    //Selected = s.Unit == units[0] ? true : false
+            //});
 
             IEnumerable<SensorType> sensorTypes = _sensorTypeRepository.GetAll();
             ViewBag.SensorType = sensorTypes.Select(s => new SelectListItem
@@ -162,12 +171,12 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(SensorVM obj, [FromRoute] string id)
+        public IActionResult Edit(SensorVM obj, [FromRoute] string id, IEnumerable<string> selectedClusterIds)
         {
 
             if (ModelState.IsValid)
             {
-                _sensorRepository.Edit(obj, id);
+                _sensorRepository.Edit(obj, id, selectedClusterIds);
 
 
                 return RedirectToAction("Index");
@@ -181,7 +190,7 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
         /// <param name="id">Takes the sensor from database by id</param>
         /// <returns></returns>
 
-        public IActionResult Delete(string id)
+        public IActionResult Delete(string id, IEnumerable<string> selectedClusterIds)
         {
             if (id == null)
             {
@@ -205,13 +214,15 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
                 IsActive = sensorFromDb.IsActive
             };
 
-            IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
-            ViewBag.Cluster = clusters.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.Name,
-               
-            });
+            IEnumerable<Cluster> getClusters = _clusterRepository.GetAll().ToList();
+            ViewData["Clusters"] = new SelectList(getClusters.ToList(), "Id", "Name");
+            //IEnumerable<Cluster> clusters = _clusterRepository.GetAll();
+            //ViewBag.Cluster = clusters.Select(s => new SelectListItem
+            //{
+            //    Value = s.Id.ToString(),
+            //    Text = s.Name,
+
+            //});
 
             IEnumerable<SensorType> sensorTypes = _sensorTypeRepository.GetAll();
             ViewBag.SensorType = sensorTypes.Select(s => new SelectListItem
@@ -241,12 +252,12 @@ namespace Nexus_loT_Web.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken, ActionName("Delete")]
-        public IActionResult DeletePOST(SensorVM obj, string id)
+        public IActionResult DeletePOST(SensorVM obj, string id, IEnumerable<string> selectedClusterIds)
         {
 
             if (ModelState.IsValid)
             {
-                _sensorRepository.Remove(obj, id);
+                _sensorRepository.Remove(obj, id, selectedClusterIds);
 
 
                 return RedirectToAction("Index");

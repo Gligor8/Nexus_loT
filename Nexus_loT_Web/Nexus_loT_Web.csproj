@@ -31,8 +31,8 @@
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.4.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-    <PackageReference Include="Telerik.Reporting.OpenXmlRendering.Trial" Version="16.2.22.914" />
-    <PackageReference Include="Telerik.WebReportDesigner.Services.Trial" Version="16.2.22.914" />
+    <!--<PackageReference Include="Telerik.Reporting.OpenXmlRendering.Trial" Version="16.2.22.914" />
+    <PackageReference Include="Telerik.WebReportDesigner.Services.Trial" Version="16.2.22.914" />-->
   </ItemGroup>
 
   <ItemGroup>

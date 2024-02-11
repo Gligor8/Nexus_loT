@@ -15,7 +15,7 @@ namespace Nexus_loT.Models.ViewModels
         public string Name { get; set; }
 
 
-        public List<Cluster> Clusters { get; set; }
+        public IEnumerable<Cluster> Clusters { get; set; }
 
 
 

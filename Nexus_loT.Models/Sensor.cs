@@ -14,7 +14,7 @@ namespace Nexus_loT.Models
         public string Name { get; set; }
 
        
-        public List<Cluster> Clusters { get; set; }
+        public IEnumerable<Cluster> Clusters { get; set; }
 
        
 

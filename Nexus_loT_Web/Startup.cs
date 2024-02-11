@@ -1,6 +1,6 @@
-using Telerik.WebReportDesigner.Services;
-using Telerik.Reporting.Cache.File;
-using Telerik.Reporting.Services;
+//using Telerik.WebReportDesigner.Services;
+//using Telerik.Reporting.Cache.File;
+//using Telerik.Reporting.Services;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.IO;
 using AutoMapper;
@@ -39,26 +39,26 @@ namespace Nexus_loT_Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages().AddNewtonsoftJson();
+            services.AddRazorPages();
             services.AddControllers();
-            services.AddMvc();
-            services.TryAddSingleton((Func<IServiceProvider, IReportServiceConfiguration>)(sp =>
-            	new ReportServiceConfiguration
-            	{
-            		ReportingEngineConfiguration = sp.GetService<IConfiguration>(),
-            		HostAppId = "WebReportDesignerApp",
-            		Storage = new FileStorage(),
-            		ReportSourceResolver = new UriReportSourceResolver(GetReportsDir(sp))
-            	}));
-            services.TryAddSingleton<IReportDesignerServiceConfiguration>(sp => new ReportDesignerServiceConfiguration
-            {
-            	DefinitionStorage = new FileDefinitionStorage(
-            		GetReportsDir(sp), new[] { "Resources" }),
-            	ResourceStorage = new ResourceStorage(
-            		Path.Combine(sp.GetService<IWebHostEnvironment>().ContentRootPath, "Resources")),
-            	SettingsStorage = new FileSettingsStorage(
-            		Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Telerik Reporting"))
-            });
+            services.AddMvc(); //.AddNewtonsoftJson();
+            //services.TryAddSingleton((Func<IServiceProvider, IReportServiceConfiguration>)(sp =>
+            //	new ReportServiceConfiguration
+            //	{
+            //		ReportingEngineConfiguration = sp.GetService<IConfiguration>(),
+            //		HostAppId = "WebReportDesignerApp",
+            //		Storage = new FileStorage(),
+            //		ReportSourceResolver = new UriReportSourceResolver(GetReportsDir(sp))
+            //	}));
+            //services.TryAddSingleton<IReportDesignerServiceConfiguration>(sp => new ReportDesignerServiceConfiguration
+            //{
+            //	DefinitionStorage = new FileDefinitionStorage(
+            //		GetReportsDir(sp), new[] { "Resources" }),
+            //	ResourceStorage = new ResourceStorage(
+            //		Path.Combine(sp.GetService<IWebHostEnvironment>().ContentRootPath, "Resources")),
+            //	SettingsStorage = new FileSettingsStorage(
+            //		Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Telerik Reporting"))
+            //});
 
             
             services.AddControllersWithViews();
